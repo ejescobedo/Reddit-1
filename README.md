@@ -83,17 +83,20 @@ def main():
     #get_oldest_comment(comments)
 
 main()
-print('Positive Comments:')
+print('POSITIVE COMMENTS:')
+print("==============================================================")
 print(*positiveList, sep="\n")
 
 print("----------------------------------------------------------- \n")
 
-print('Negative Comments:')
+print('NEGATIVE COMMENT:')
+print("==============================================================")
 print(*negativeList, sep="\n")
 
 print("----------------------------------------------------------- \n")
 
-print("Neutral Comments:")
+print("NEUTRAL COMMENT:")
+print("==============================================================")
 print(*neutralList, sep="\n")
 
 print("----------------------------------------------------------- \n")
