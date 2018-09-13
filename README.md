@@ -15,6 +15,7 @@ sid = SentimentIntensityAnalyzer()
 positiveList = []
 negativeList = []
 neutralList = []
+newList = []
 
 
 def get_text_negative_proba(text):
@@ -31,20 +32,10 @@ def get_text_positive_proba(text):
 
 def get_submission_comments(url):
     submission = reddit.submission(url=url)
-    submission.comments.replace_more()
+    submission.comment_sort = 'old' #to sort the list from oldest to new
+    submission.comments.replace_more(limit=0)
 
     return submission.comments
-
-
-def display_list(list):
-    for i in range(len(list)):
-        print (list[i])
-    print("\n")
-
-
-def get_oldest_comment(comments):
-    for comment in reddit.subreddit(comments).stream.comments():
-        print(comment)
 
 
 
@@ -54,6 +45,7 @@ def traverse_comments(comments):
         pos = get_text_positive_proba(comments[i].body)
         neu = get_text_neutral_proba(comments[i].body)
 
+        #checking to see which prob value is larger in order to append to the correct list
         if neg > max(pos,neu):
             negativeList.append(comments[i].body)
         if pos > max(neg,neu):
@@ -68,37 +60,49 @@ def traverse_comments(comments):
 
 
 
+
+
 def main():
     comments = get_submission_comments('https://www.reddit.com/r/learnprogramming/comments/5w50g5/eli5_what_is_recursion/')
     #print(comments[0].body)
     #print(comments[0].replies[0].body)
     #print(comments[0].replies[0].replies[0].body)
 
+    print('OLDEST COMMENT EXTRA CREDIT \n=========================================== \n',comments[0].body)
+
     traverse_comments(comments)
 
-    neg = get_text_negative_proba(comments[0].replies[0].body)
 
-    print(neg)
+    #comments.comment_sort = 'old'
+
+
 
     #get_oldest_comment(comments)
 
 main()
+print("\n")
+
 print('POSITIVE COMMENTS:')
 print("==============================================================")
 print(*positiveList, sep="\n")
 
-print("----------------------------------------------------------- \n")
+print("\n")
 
-print('NEGATIVE COMMENT:')
+print('NEGATIVE COMMENTS:')
 print("==============================================================")
 print(*negativeList, sep="\n")
 
-print("----------------------------------------------------------- \n")
+print("\n")
 
-print("NEUTRAL COMMENT:")
+print("NEUTRAL COMMENTS:")
 print("==============================================================")
 print(*neutralList, sep="\n")
 
-print("----------------------------------------------------------- \n")
+print("\n")
 
+print('OLDEST POSITIVE COMMENT EXTRA CREDIT: \n=========================================== \n', positiveList[0])
+
+print("\n")
+
+print('OLDEST NEGATIVE COMMENT EXTRA CREDIT: \n=========================================== \n', negativeList[0])
 
