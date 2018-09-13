@@ -16,6 +16,7 @@ positiveList = []
 negativeList = []
 neutralList = []
 newList = []
+totalList = []
 
 
 def get_text_negative_proba(text):
@@ -47,7 +48,7 @@ def traverse_comments(comments):
 
         #checking to see which prob value is larger in order to append to the correct list
         if neg > max(pos,neu):
-            negativeList.append(comments[i].body)
+            negativeList.append(comments[i].body) #adding to the appropriate list
         if pos > max(neg,neu):
             positiveList.append(comments[i].body)
         if neu > max(pos, neg):
@@ -58,8 +59,20 @@ def traverse_comments(comments):
         except:
             print('No replies')
 
+def oldest_positive_comments(comments):
+    oldest = comments.pop()
 
+    return oldest
 
+def oldest_negative_comments(comments):
+    oldest = comments.pop()
+
+    return oldest
+
+def oldest_comments(comments):
+    oldest = comments.pop()
+
+    return oldest
 
 
 def main():
@@ -100,9 +113,19 @@ print(*neutralList, sep="\n")
 
 print("\n")
 
-print('OLDEST POSITIVE COMMENT EXTRA CREDIT: \n=========================================== \n', positiveList[0])
+positiveList.sort(reverse=True)
+negativeList.sort(reverse=True)
+#totalList = get_submission_comments('https://www.reddit.com/r/learnprogramming/comments/5w50g5/eli5_what_is_recursion/')
+#totalList.sort(reverse=True)
+
+#lastPos = oldest_positive_comments(positiveList)
+
+#print('OLDEST COMMENTS EXTRA CREDIT: \n=========================================== \n', oldest_comments(totalList))
+
+print('OLDEST POSITIVE COMMENTS EXTRA CREDIT: \n=========================================== \n', oldest_positive_comments(positiveList))
 
 print("\n")
 
-print('OLDEST NEGATIVE COMMENT EXTRA CREDIT: \n=========================================== \n', negativeList[0])
+print('OLDEST NEGATIVE COMMENT EXTRA CREDIT: \n=========================================== \n', oldest_negative_comments(negativeList))
 
+print(oldest_negative_comments(negativeList))
