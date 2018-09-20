@@ -17,6 +17,7 @@ negativeList = []
 neutralList = []
 newList = []
 totalList = []
+url = 'https://www.reddit.com/r/learnprogramming/comments/5w50g5/eli5_what_is_recursion/'
 
 
 def get_text_negative_proba(text):
@@ -33,10 +34,17 @@ def get_text_positive_proba(text):
 
 def get_submission_comments(url):
     submission = reddit.submission(url=url)
+    submission.comments.replace_more(limit=0)
+
+    return submission.comments
+
+def get_submission_comments_sort(url):
+    submission = reddit.submission(url=url)
     submission.comment_sort = 'old' #to sort the list from oldest to new
     submission.comments.replace_more(limit=0)
 
     return submission.comments
+
 
 
 
@@ -60,37 +68,57 @@ def traverse_comments(comments):
             print('No replies')
 
 def oldest_positive_comments(comments):
-    oldest = comments.pop()
-
-    return oldest
+    try:
+        return comments.pop()
+    except:
+        print("List is empty")
 
 def oldest_negative_comments(comments):
-    oldest = comments.pop()
-
-    return oldest
+    try:
+        return comments.pop()
+    except:
+        print("List is empty")
 
 def oldest_comments(comments):
-    oldest = comments.pop()
 
-    return oldest
+    try:
+        return comments.pop()
+    except:
+        print("List is empty")
+
+
+def print_mainComments(comments):
+
+    from praw.models import MoreComments
+    for top_level_comment in comments:
+        if isinstance(top_level_comment, MoreComments):
+            continue
+        print(top_level_comment.body)
+
+
+def to_oldest_sort():
+    comments = get_submission_comments_sort(url)
+
+    return comments
 
 
 def main():
-    comments = get_submission_comments('https://www.reddit.com/r/learnprogramming/comments/5w50g5/eli5_what_is_recursion/')
-    #print(comments[0].body)
-    #print(comments[0].replies[0].body)
-    #print(comments[0].replies[0].replies[0].body)
+    comments = get_submission_comments(url)
 
-    print('OLDEST COMMENT EXTRA CREDIT \n=========================================== \n',comments[0].body)
+    print("===============================================")
+    # print_mainComments(comments)
 
-    traverse_comments(comments)
+    comments_sorted = to_oldest_sort()
 
 
-    #comments.comment_sort = 'old'
+    totalList.sort(reverse=True)
+
+    print('OLDEST COMMENT EXTRA CREDIT \n=========================================== \n', oldest_comments(totalList))
+
+    traverse_comments(comments_sorted)
 
 
 
-    #get_oldest_comment(comments)
 
 main()
 print("\n")
@@ -115,12 +143,7 @@ print("\n")
 
 positiveList.sort(reverse=True)
 negativeList.sort(reverse=True)
-#totalList = get_submission_comments('https://www.reddit.com/r/learnprogramming/comments/5w50g5/eli5_what_is_recursion/')
-#totalList.sort(reverse=True)
 
-#lastPos = oldest_positive_comments(positiveList)
-
-#print('OLDEST COMMENTS EXTRA CREDIT: \n=========================================== \n', oldest_comments(totalList))
 
 print('OLDEST POSITIVE COMMENTS EXTRA CREDIT: \n=========================================== \n', oldest_positive_comments(positiveList))
 
@@ -128,4 +151,4 @@ print("\n")
 
 print('OLDEST NEGATIVE COMMENT EXTRA CREDIT: \n=========================================== \n', oldest_negative_comments(negativeList))
 
-print(oldest_negative_comments(negativeList))
+
